@@ -15,6 +15,8 @@ using Stride.Assets.Presentation.NodePresenters.Keys;
 using Stride.Assets.Presentation.ViewModel;
 using Stride.Engine;
 using Stride.Core.Presentation.Core;
+using Stride.Core.Presentation.Quantum.Presenters;
+using Stride.Assets.Presentation.Extensions;
 
 namespace Stride.Assets.Presentation.NodePresenters.Updaters
 {
@@ -78,11 +80,12 @@ namespace Stride.Assets.Presentation.NodePresenters.Updaters
                     componentCount[type] = ++count;
                 }
             }
-            if (typeof(EntityComponent).IsAssignableFrom(node.Type))
+
+            if (node.CanReferenceEntityComponent())
             {
                 node.AttachedProperties.Add(ReferenceData.Key, new ComponentReferenceViewModel());
             }
-            if (typeof(Entity) == node.Type)
+            if (node.CanReferenceEntity())
             {
                 node.AttachedProperties.Add(ReferenceData.Key, new EntityReferenceViewModel());
             }

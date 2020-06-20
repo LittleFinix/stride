@@ -72,11 +72,12 @@ namespace Stride.Assets.Presentation.AssetEditors.EntityHierarchyEditor.Views
             if (editor == null) throw new ArgumentNullException(nameof(editor));
 
             InitializeComponent();
-            if (targetType != null && typeof(EntityComponent).IsAssignableFrom(targetType))
+            if (targetType != null && typeof(EntityComponent).IsAssignableFrom(targetType) || targetType.IsInterface)
             {
                 ComponentType = targetType;
                 Width *= 2;
             }
+
             DataContext = this;
             Loaded += (s, e) => OnLoaded(editor);
         }
