@@ -8,6 +8,7 @@ using Stride.Core.Presentation.Quantum.View;
 using Stride.Core.Presentation.Quantum.ViewModels;
 using System.Diagnostics;
 using Stride.Assets.Presentation.Helpers;
+using Stride.Assets.Presentation.Extensions;
 
 namespace Stride.Assets.Presentation.TemplateProviders
 {
@@ -17,7 +18,8 @@ namespace Stride.Assets.Presentation.TemplateProviders
 
         public override bool MatchNode(NodeViewModel node)
         {
-            return ReferenceEntityComponentHelper.CanReference(node.Type) && node.Parent?.Type != typeof(EntityComponentCollection);
+            return (ReferenceEntityComponentHelper.CanReference(node.Type) || node.NodePresenters.Any(p => p.CanReferenceEntityComponent()))
+                && node.Parent?.Type != typeof(EntityComponentCollection);
         }
     }
 }

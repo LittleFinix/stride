@@ -60,7 +60,7 @@ namespace Stride.Core.Assets.Editor.Quantum.NodePresenters.Updaters
         protected override void UpdateNode(IAssetNodePresenter node)
         {
             var type = node.Descriptor.GetInnerCollectionType();
-            if (type.IsAbstract && !IsReferenceType(type) && !node.IsObjectReference(node.Value) && IsInstantiable(type) && !node.Descriptor.Attributes.OfType<ReferenceEntityComponentAttribute>().Any())
+            if (type.IsAbstract && !IsReferenceType(type) && !node.IsObjectReference(node.Value) && IsInstantiable(type) && !IsComponentReference(node))
             {
                 var abstractNodeEntries = FillDefaultAbstractNodeEntry(node);
                 node.AttachedProperties.Add(AbstractNodeEntryData.Key, abstractNodeEntries);
@@ -70,5 +70,8 @@ namespace Stride.Core.Assets.Editor.Quantum.NodePresenters.Updaters
         private static bool IsInstantiable(Type type) => TypeDescriptorFactory.Default.AttributeRegistry.GetAttribute<NonInstantiableAttribute>(type) == null;
 
         private static bool IsReferenceType(Type type) => AssetRegistry.IsContentType(type) || typeof(AssetReference).IsAssignableFrom(type);
+
+        private static bool IsComponentReference(IAssetNodePresenter node) => node.Descriptor.Attributes.OfType<ReferenceEntityComponentAttribute>().Any()
+            || node is MemberNodePresenter mn && mn.MemberAttributes.OfType<ReferenceEntityComponentAttribute>().Any();
     }
 }
